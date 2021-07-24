@@ -4,6 +4,7 @@
 
 let server;
 let clientKey = 0;
+let gameBroadcaster;
 
 const WebSocketServer = window.require('websocket').server;
 const http = require('http');
@@ -15,7 +16,7 @@ const robotCount = document.getElementById("robotCount")
 
 window.clients = {};
 window.BroadcastAll = function (msg) {
-    console.log("1", {msg});
+    console.log("1", { msg });
     window.lastMsg = msg;
 
     if (server == null) {
@@ -28,7 +29,7 @@ window.BroadcastAll = function (msg) {
     }
 }
 window.BroadcastCommand = function (msg) {
-    console.log("2",{msg});
+    console.log("2", { msg });
 
     window.BroadcastAll(JSON.stringify({
         Kind: "COMMAND",
@@ -68,6 +69,7 @@ btnStart.addEventListener('click', function (e) {
         portInput.disabled = false;
         btnStart.innerText = "Start";
         UpdateClientOverview();
+        clearInterval(gameBroadcaster);
     } else {
         console.log("Starting server");
         // Start
@@ -113,6 +115,21 @@ btnStart.addEventListener('click', function (e) {
                     UpdateClientOverview();
                 });
             });
+
+            gameBroadcaster = setInterval(function () {
+                let allRobotState = [];
+                for (const [key,it] of Object.entries(clients)) {
+                    if (it.telemetry == null) continue // Skip yang bukan robot
+                    allRobotState.push(it.telemetry);                    
+                }
+                BroadcastAll(JSON.stringify({
+                    Kind: "GAMESTATE",
+                    Content: JSON.stringify({
+                        RobotStates: allRobotState
+                    }),
+                    Receiver: "ALL"
+                }));
+            }, 10);
 
             btnStart.innerText = "Stop";
             btnStart.classList.add("bg-danger");

@@ -2,7 +2,6 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-let clients = {};
 let server;
 let clientKey = 0;
 
@@ -14,15 +13,29 @@ const portInput = document.getElementById("portInput")
 const clientCount = document.getElementById("clientCount")
 const robotCount = document.getElementById("robotCount")
 
+window.clients = {};
+window.BroadcastAll = function (msg) {
+    window.lastMsg = msg;
+
+    if (server == null) {
+        alert("Server belum berjalan!")
+        return;
+    }
+
+    for (const [key, it] of Object.entries(window.clients)) {
+        it.send(msg ?? "ssszzz");
+    }
+}
+
 function UpdateClientOverview() {
-    clientCount.innerText = Object.keys(clients).length;
+    clientCount.innerText = Object.keys(window.clients).length;
 }
 
 function UpdateTelemetry(clientId, tele) {
-    clients[clientId].telemetry = tele;
+    window.clients[clientId].telemetry = tele;
     let robCount = 0;
 
-    for (const [key, it] of Object.entries(clients)) {
+    for (const [key, it] of Object.entries(window.clients)) {
         if (it.telemetry) {
             robCount++;
         }
@@ -34,12 +47,12 @@ btnStart.addEventListener('click', function (e) {
     if (server) {
         // Stop
         console.log("Stopping server");
-        for (const [key, socket] of Object.entries(clients)) {
+        for (const [key, socket] of Object.entries(window.clients)) {
             socket.close();
-            delete clients[key];
+            delete window.clients[key];
         }
         server.close();
-        clients = {}
+        window.clients = {}
         server = null;
         btnStart.classList.remove("bg-danger");
         portInput.disabled = false;
@@ -64,7 +77,7 @@ btnStart.addEventListener('click', function (e) {
 
                 clientKey++;
                 const myConnectionKey = clientKey;
-                clients[myConnectionKey] = connection;
+                window.clients[myConnectionKey] = connection;
                 UpdateClientOverview();
 
                 connection.on('message', function (message) {
@@ -77,13 +90,13 @@ btnStart.addEventListener('click', function (e) {
                     } else {
                         // Berupa text biasa, dikirim via Websocket Client biasa
                         console.log(message);
-                        console.log(clients);
+                        console.log(window.clients);
                     }
                 });
 
                 connection.on('close', function (con) {
                     // close user connection
-                    delete clients[myConnectionKey];
+                    delete window.clients[myConnectionKey];
                     UpdateClientOverview();
                 });
             });

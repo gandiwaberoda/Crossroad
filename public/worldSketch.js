@@ -1,5 +1,3 @@
-
-
 const worldCanvasContainer = document.getElementById("worldCanvasContainer")
 const worldSketch = (sk) => {
     let scale = 1.0;
@@ -20,6 +18,10 @@ const worldSketch = (sk) => {
         sk.createCanvas(worldCanvasContainer.offsetWidth, worldCanvasContainer.offsetHeight);
         rescale();
     };
+
+    function drawRobot(worldX, worldY, worldRot) {
+
+    }
 
     function drawLapangan() {
         sk.push();
@@ -54,7 +56,7 @@ const worldSketch = (sk) => {
         sk.fill(56, 155, 60);
 
 
-        sk.rect()
+        // sk.rect()
         sk.pop();
     }
 

@@ -21,14 +21,13 @@
 <body style="height: 100vh;" class="bg-dark">
   <div class="container-fluid h-100 w-100">
     <div class="row h-100">
-      <div class="col-3 bg-dark d-flex flex-column align-content-between">
-        <div class="h-100">
+      <div class="col-3 p-0 bg-dark d-flex flex-column align-content-between">
+        <div class="h-100 p-3">
           <h2 class="text-white text-center p-2 pt-3" style="font-family: Satisfy;">Crossroad</h2>
 
           <div class="d-flex pb-3">
             <img style="width: 5rem;" src="./img/unud.png" alt="">
           </div>
-
 
           <div class="row g-3">
             <div class="col">
@@ -39,28 +38,46 @@
               <button id="btnStart" type="button" class="col btn btn-dark bg-primary w-100">Start</button>
             </div>
           </div>
+
+          <div class="py-3">
+            <p class="text-white">Client count: <span id="clientCount">0</span></p>
+            <p class="text-white">Robot count: <span id="robotCount">0</span></p>
+          </div>
         </div>
 
-        <div>
-          <p class="text-white">Client count: <span id="clientCount">0</span></p>
-          <p class="text-white">Robot count: <span id="robotCount">0</span></p>
+        <div class="px-2">
+          <div id="worldCanvasContainer"></div>
         </div>
-
-        <div id="worldCanvasContainer"></div>
       </div>
 
-      <div class="col p-3 d-flex flex-column">
-        <nav class="nav nav-pills flex-column flex-sm-row">
+      <div class="col p-2 pl-0 d-flex flex-column">
+        <!-- <nav class="nav nav-pills flex-column flex-sm-row">
           <a class="text-sm-center nav-link active" href="#">Overview</a>
           <a class="text-sm-center nav-link" href="#">Robot 1</a>
           <a class="text-sm-center nav-link" href="#">Robot 2</a>
         </nav>
 
         <div class="flex-grow-1">
+        </div> -->
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+              type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
+            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+              type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+              type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+          </div>
+        </nav>
+        <div class="tab-content flex-grow-1 text-white" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+          <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
         </div>
 
         <div class="d-flex gap-1 mb-1">
-          <button id="cmdKirim" type="button" class="btn btn-sm btn-outline-primary text-white">Kirim</button>
+          <button id="cmdKirim" type="button" class="btn btn-sm btn-outline-light text-white">Kirim</button>
+          <span>|</span>
           <button id="cmdIdle" type="button" class="btn btn-sm btn-outline-light">All:Idle</button>
           <button id="cmdGetball" type="button" class="btn btn-sm btn-outline-light">All:Getball</button>
           <button id="cmdWatchat" type="button" class="btn btn-sm btn-outline-light">All:Watchat(Ball)</button>

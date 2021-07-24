@@ -7,10 +7,16 @@ const worldSketch = (sk) => {
     const canvasH = 1000;
     const lapanganOrigin = { x: lapanganPadding, y: lapanganPadding };
 
+    function W2CanX(worldX) {
+        return (worldX + lapanganPadding) * scale;
+    }
+    function W2CanY(worldY) {
+        return (canvasH - worldY - lapanganPadding) * scale;
+    }
     function W2CanvasSpace(x, y) {
         return {
-            x: x * scale,
-            y: (900 - y) * scale,
+            x: W2CanX(x),
+            y: W2CanY(y),
         }
     }
 
@@ -20,7 +26,11 @@ const worldSketch = (sk) => {
     };
 
     function drawRobot(worldX, worldY, worldRot) {
-
+        sk.push()
+        sk.ellipseMode(sk.CENTER);
+        sk.fill(255);
+        sk.circle(W2CanX(worldX), W2CanY(worldY), 50 * scale);
+        sk.pop()
     }
 
     function drawLapangan() {
@@ -39,8 +49,7 @@ const worldSketch = (sk) => {
         sk.rect(0, 0, 600 * scale, 900 * scale);
 
         // Lingkaran tengah
-        const tengah = W2CanvasSpace(600 / 2, 900 / 2);
-        sk.circle(tengah.x, tengah.y, 200 * scale)
+        sk.circle(300 * scale, 450 * scale, 200 * scale)
         sk.line(0, 900 / 2 * scale, 600 * scale, 900 / 2 * scale)
 
         // Garis Gawang Temen
@@ -68,6 +77,7 @@ const worldSketch = (sk) => {
     sk.draw = () => {
         sk.background(0);
         drawLapangan();
+        drawRobot(300, 450, 10);
     };
 
     sk.windowResized = () => {

@@ -14,6 +14,7 @@
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="libraries/css/bootstrap.css">
+  <link rel="stylesheet" href="css/global.css">
   <script src="libraries/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -22,11 +23,16 @@
     <div class="row h-100">
       <div class="col-3 bg-dark d-flex flex-column align-content-between">
         <div class="h-100">
-          <h1 class="text-white text-center p-2">Crossroad</h1>
+          <h2 class="text-white text-center p-2 pt-3" style="font-family: Satisfy;">Crossroad</h2>
+
+          <div class="d-flex pb-3">
+            <img style="width: 5rem;" src="./img/unud.png" alt="">
+          </div>
+
 
           <div class="row g-3">
             <div class="col">
-              <input type="number" value="6901" class="form-control" id="portInput" placeholder="Port">
+              <input type="number" value="6901" class="form-control bg-dark text-white" id="portInput" placeholder="Port">
             </div>
             <div class="col">
               <button id="btnStart" type="button" class="col btn btn-dark bg-primary w-100">Start</button>
@@ -53,8 +59,15 @@
         </div>
 
         <div class="d-flex gap-1 mb-1">
-          <button id="cmdKirim" type="button" class="btn btn-secondary">Kirim</button>
-          <button id="cmdIdle" type="button" class="btn btn-secondary">Idle</button>
+          <button id="cmdKirim" type="button" class="btn btn-sm btn-outline-primary text-white">Kirim</button>
+          <button id="cmdIdle" type="button" class="btn btn-sm btn-outline-light">All:Idle</button>
+          <button id="cmdGetball" type="button" class="btn btn-sm btn-outline-light">All:Getball</button>
+          <button id="cmdWatchat" type="button" class="btn btn-sm btn-outline-light">All:Watchat(Ball)</button>
+          <button id="cmdW" type="button" class="btn btn-sm btn-outline-light">All:W</button>
+          <button id="cmdA" type="button" class="btn btn-sm btn-outline-light">All:A</button>
+          <button id="cmdS" type="button" class="btn btn-sm btn-outline-light">All:S</button>
+          <button id="cmdD" type="button" class="btn btn-sm btn-outline-light">All:D</button>
+          <button id="cmdResetOdo" type="button" class="btn btn-sm btn-outline-light">All:Reset Odometry</button>
         </div>
 
         <div class="form-floating h-25">

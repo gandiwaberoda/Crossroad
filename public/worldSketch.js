@@ -26,10 +26,21 @@ const worldSketch = (sk) => {
     };
 
     function drawRobot(worldX, worldY, worldRot) {
+        const radiusRobotCm = 50;
+
         sk.push()
         sk.ellipseMode(sk.CENTER);
         sk.fill(255);
-        sk.circle(W2CanX(worldX), W2CanY(worldY), 50 * scale);
+        sk.circle(W2CanX(worldX), W2CanY(worldY), radiusRobotCm * scale);
+
+        sk.push();
+        sk.angleMode(sk.DEGREES);
+        sk.strokeWeight(2);
+        sk.translate(W2CanX(worldX), W2CanY(worldY));
+        sk.rotate(worldRot)
+        sk.line(0, 0, 0, -(radiusRobotCm / 2 * scale));
+        sk.pop()
+
         sk.pop()
     }
 
@@ -77,7 +88,13 @@ const worldSketch = (sk) => {
     sk.draw = () => {
         sk.background(0);
         drawLapangan();
-        drawRobot(300, 450, 10);
+
+        for (const [_, it] of Object.entries(clients)) {
+            if (it.telemetry == null) continue // Skip yang bukan robot
+            const tele = it.telemetry;
+            // console.log(tele);
+            drawRobot(tele['MyTransform']['WorldXcm'], tele['MyTransform']['WorldYcm'], tele['MyTransform']['WorldROT']);
+        }
     };
 
     sk.windowResized = () => {

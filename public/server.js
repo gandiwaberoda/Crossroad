@@ -15,6 +15,7 @@ const robotCount = document.getElementById("robotCount")
 
 window.clients = {};
 window.BroadcastAll = function (msg) {
+    console.log("1", {msg});
     window.lastMsg = msg;
 
     if (server == null) {
@@ -25,6 +26,15 @@ window.BroadcastAll = function (msg) {
     for (const [key, it] of Object.entries(window.clients)) {
         it.send(msg ?? "ssszzz");
     }
+}
+window.BroadcastCommand = function (msg) {
+    console.log("2",{msg});
+
+    window.BroadcastAll(JSON.stringify({
+        Kind: "COMMAND",
+        Content: msg,
+        Receiver: "ALL"
+    }))
 }
 
 function UpdateClientOverview() {
@@ -84,8 +94,11 @@ btnStart.addEventListener('click', function (e) {
                     if (message.type === 'binary') {
                         // Berupa binary, parse sebagai json
                         // Anggap merupakan Intercom
-                        const decoded = JSON.parse(message.binaryData);
-                        UpdateTelemetry(myConnectionKey, decoded);
+                        const intercom = JSON.parse(message.binaryData);
+
+                        if (intercom['Kind'].toUpperCase() === "TELEMETRY") {
+                            UpdateTelemetry(myConnectionKey, JSON.parse(intercom.Content));
+                        }
                         // console.log(decoded);
                     } else {
                         // Berupa text biasa, dikirim via Websocket Client biasa

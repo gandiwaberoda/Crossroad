@@ -1,29 +1,27 @@
-const cmdInput = document.getElementById("cmdInput")
-
 document.getElementById("cmdKirim").addEventListener("click", () => {
-    BroadcastAll(cmdInput.value);
+    BroadcastCommand(cmdInput.value);
 })
 document.getElementById("cmdIdle").addEventListener("click", () => {
-    BroadcastAll("all:idle");
+    window.BroadcastCommand("all:idle");
 })
 document.getElementById("cmdGetball").addEventListener("click", () => {
-    BroadcastAll("all:getball");
+    BroadcastCommand("all:getball");
 })
 document.getElementById("cmdWatchat").addEventListener("click", () => {
-    BroadcastAll("all:watchat(ball)");
+    BroadcastCommand("all:watchat(ball)");
 })
 document.getElementById("cmdW").addEventListener("click", () => {
-    BroadcastAll("all:w");
+    BroadcastCommand("all:w");
 })
 document.getElementById("cmdA").addEventListener("click", () => {
-    BroadcastAll("all:a");
+    BroadcastCommand("all:a");
 })
 document.getElementById("cmdS").addEventListener("click", () => {
-    BroadcastAll("all:s");
+    BroadcastCommand("all:s");
 })
 document.getElementById("cmdD").addEventListener("click", () => {
-    BroadcastAll("all:d");
+    BroadcastCommand("all:d");
 })
 document.getElementById("cmdResetOdo").addEventListener("click", () => {
-    BroadcastAll("all:fwd(*a,0,0,0,0,0,1#)");
+    BroadcastCommand("all:fwd(*a,0,0,0,0,0,1#)");
 })

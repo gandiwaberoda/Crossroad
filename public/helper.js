@@ -24,7 +24,6 @@ $(function () {
                 var lineStart = sel;
                 while (text[sel] == ' ' || text[sel] == '\t')
                     sel++;
-
                 if (sel > lineStart) {
                     // Insert carriage return and indented text
                     document.execCommand('insertText', false, "\n" + text.substr(lineStart, sel - lineStart));

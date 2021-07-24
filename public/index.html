@@ -20,7 +20,12 @@
       <div class="col-3 bg-dark d-flex flex-column align-content-between">
         <div class="h-100">
           <h1 class="text-white text-center p-2">Crossroad</h1>
-          <button type="button" class="btn btn-light w-100">Start</button>
+
+          <div class="d-flex">
+            <input type="number" value="6901" style="margin-right: 1rim;" class="form-control" id="portInput"
+              placeholder="Port">
+            <button id="btnStart" type="button" class="btn btn-dark bg-primary w-100">Start</button>
+          </div>
         </div>
         <div id="worldCanvasContainer"></div>
       </div>

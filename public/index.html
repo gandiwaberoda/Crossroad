@@ -10,7 +10,7 @@
   <!--<script language="javascript" src="libraries/p5.sound.js"></script>-->
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="libraries/css/bootstrap.min.css">
+  <link rel="stylesheet" href="libraries/css/bootstrap.css">
   <script src="libraries/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -21,12 +21,21 @@
         <div class="h-100">
           <h1 class="text-white text-center p-2">Crossroad</h1>
 
-          <div class="d-flex">
-            <input type="number" value="6901" style="margin-right: 1rim;" class="form-control" id="portInput"
-              placeholder="Port">
-            <button id="btnStart" type="button" class="btn btn-dark bg-primary w-100">Start</button>
+          <div class="row g-3">
+            <div class="col">
+              <input type="number" value="6901" class="form-control" id="portInput" placeholder="Port">
+            </div>
+            <div class="col">
+              <button id="btnStart" type="button" class="col btn btn-dark bg-primary w-100">Start</button>
+            </div>
           </div>
         </div>
+
+        <div>
+          <p class="text-white">Client count: <span id="clientCount">0</span></p>
+          <p class="text-white">Robot count: <span id="robotCount">0</span></p>
+        </div>
+
         <div id="worldCanvasContainer"></div>
       </div>
 

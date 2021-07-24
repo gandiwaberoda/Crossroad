@@ -4,12 +4,31 @@
 
 let clients = {};
 let server;
+let clientKey = 0;
 
 const WebSocketServer = window.require('websocket').server;
 const http = require('http');
 
 const btnStart = document.getElementById("btnStart")
 const portInput = document.getElementById("portInput")
+const clientCount = document.getElementById("clientCount")
+const robotCount = document.getElementById("robotCount")
+
+function UpdateClientOverview() {
+    clientCount.innerText = Object.keys(clients).length;
+}
+
+function UpdateTelemetry(clientId, tele) {
+    clients[clientId].telemetry = tele;
+    let robCount = 0;
+
+    for (const [key, it] of Object.entries(clients)) {
+        if (it.telemetry) {
+            robCount++;
+        }
+    }
+    robotCount.innerText = robCount;
+}
 
 btnStart.addEventListener('click', function (e) {
     if (server) {
@@ -25,6 +44,7 @@ btnStart.addEventListener('click', function (e) {
         btnStart.classList.remove("bg-danger");
         portInput.disabled = false;
         btnStart.innerText = "Start";
+        UpdateClientOverview();
     } else {
         console.log("Starting server");
         // Start
@@ -38,9 +58,6 @@ btnStart.addEventListener('click', function (e) {
                 httpServer: server
             });
 
-            let clientKey = 0;
-            console.log("entah");
-
             // WebSocket server
             wsServer.on('request', function (request) {
                 let connection = request.accept(null, request.origin);
@@ -48,12 +65,14 @@ btnStart.addEventListener('click', function (e) {
                 clientKey++;
                 const myConnectionKey = clientKey;
                 clients[myConnectionKey] = connection;
+                UpdateClientOverview();
 
                 connection.on('message', function (message) {
                     if (message.type === 'binary') {
                         // Berupa binary, parse sebagai json
                         // Anggap merupakan Intercom
                         const decoded = JSON.parse(message.binaryData);
+                        UpdateTelemetry(myConnectionKey, decoded);
                         // console.log(decoded);
                     } else {
                         // Berupa text biasa, dikirim via Websocket Client biasa
@@ -65,6 +84,7 @@ btnStart.addEventListener('click', function (e) {
                 connection.on('close', function (con) {
                     // close user connection
                     delete clients[myConnectionKey];
+                    UpdateClientOverview();
                 });
             });
 
@@ -73,8 +93,10 @@ btnStart.addEventListener('click', function (e) {
             portInput.disabled = true;
         });
         server.once("error", function (err) {
+            server = null;
             console.error(err);
             alert("Tidak bisa membuka server (Buka devconsole untuk pesan error):")
+            UpdateClientOverview();
         })
     }
 })

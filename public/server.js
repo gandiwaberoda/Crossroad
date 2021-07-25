@@ -16,7 +16,7 @@ const robotCount = document.getElementById("robotCount")
 
 window.clients = {};
 window.BroadcastAll = function (msg) {
-    console.log("1", { msg });
+    // console.log("1", { msg });
     window.lastMsg = msg;
 
     if (server == null) {
@@ -29,7 +29,7 @@ window.BroadcastAll = function (msg) {
     }
 }
 window.BroadcastCommand = function (msg) {
-    console.log("2", { msg });
+    // console.log("2", { msg });
 
     window.BroadcastAll(JSON.stringify({
         Kind: "COMMAND",
@@ -106,8 +106,8 @@ btnStart.addEventListener('click', function (e) {
                         // console.log(decoded);
                     } else {
                         // Berupa text biasa, dikirim via Websocket Client biasa
-                        console.log(message);
-                        console.log(window.clients);
+                        // console.log(message);
+                        // console.log(window.clients);
                     }
                 });
 

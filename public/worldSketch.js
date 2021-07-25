@@ -1,4 +1,9 @@
 const worldCanvasContainer = document.getElementById("worldCanvasContainer")
+const telemetryRaw = document.getElementById("telemetryRaw")
+
+const COLOR_CYAN_NAME = "CYAN";
+const COLOR_MAGENTA_NAME = "MAGENTA";
+
 const worldSketch = (sk) => {
     let scale = 1.0;
 
@@ -13,24 +18,26 @@ const worldSketch = (sk) => {
     function W2CanY(worldY) {
         return (canvasH - worldY - lapanganPadding) * scale;
     }
-    function W2CanvasSpace(x, y) {
-        return {
-            x: W2CanX(x),
-            y: W2CanY(y),
-        }
-    }
 
     sk.setup = () => {
         sk.createCanvas(worldCanvasContainer.offsetWidth, worldCanvasContainer.offsetHeight);
         rescale();
     };
 
-    function drawRobot(worldX, worldY, worldRot) {
+    function drawRobot(worldX, worldY, worldRot, colorName) {
+        console.log({ colorName });
         const radiusRobotCm = 50;
 
         sk.push()
         sk.ellipseMode(sk.CENTER);
-        sk.fill(255);
+        if (colorName.toUpperCase() == COLOR_CYAN_NAME) {
+            sk.fill(0, 255, 255);
+        } else if (colorName.toUpperCase() == COLOR_MAGENTA_NAME) {
+            sk.fill(255, 0, 255);
+        } else {
+            sk.fill(255);
+        }
+
         sk.circle(W2CanX(worldX), W2CanY(worldY), radiusRobotCm * scale);
 
         sk.push();
@@ -42,6 +49,24 @@ const worldSketch = (sk) => {
         sk.pop()
 
         sk.pop()
+    }
+
+    function drawPerception(tele) {
+        telemetryRaw.innerText = JSON.stringify(tele, null, 2);
+
+        const robWx = tele['MyTransform']['WorldXcm'];
+        const robWy = tele['MyTransform']['WorldYcm'];
+
+        const robCx = W2CanX(robWx)
+        const robCy = W2CanX(robWy)
+
+        drawRobot(robWx, robWx, tele['MyTransform']['WorldROT'], tele['MyColor']);
+
+        sk.push();
+        const ballX = W2CanX(tele['BallTransform']['WorldXcm'])
+        const ballY = W2CanY(tele['BallTransform']['WorldYcm'])
+        sk.line(robCx, robCy, ballX, ballY)
+        sk.pop();
     }
 
     function drawLapangan() {
@@ -92,8 +117,8 @@ const worldSketch = (sk) => {
         for (const [_, it] of Object.entries(clients)) {
             if (it.telemetry == null) continue // Skip yang bukan robot
             const tele = it.telemetry;
-            // console.log(tele);
-            drawRobot(tele['MyTransform']['WorldXcm'], tele['MyTransform']['WorldYcm'], tele['MyTransform']['WorldROT']);
+            drawPerception(tele)
+            // console.log(tele);}
         }
     };
 

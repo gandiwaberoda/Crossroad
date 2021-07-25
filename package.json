@@ -24,7 +24,7 @@
         "demo",
         "p5.js"
     ],
-    "author": "Jose Luis Garcia del Castillo",
+    "author": "Hari Anugrah",
     "license": "tbd",
     "devDependencies": {
         "electron": "^13.1.7",

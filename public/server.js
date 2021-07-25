@@ -39,12 +39,8 @@ window.BroadcastCommand = function (msg) {
 }
 
 function UpdateClientOverview() {
-    clientCount.innerText = Object.keys(window.clients).length;
-}
-
-function UpdateTelemetry(clientId, tele) {
-    window.clients[clientId].telemetry = tele;
     let robCount = 0;
+    clientCount.innerText = Object.keys(window.clients).length;
 
     for (const [key, it] of Object.entries(window.clients)) {
         if (it.telemetry) {
@@ -52,6 +48,12 @@ function UpdateTelemetry(clientId, tele) {
         }
     }
     robotCount.innerText = robCount;
+}
+
+
+function UpdateTelemetry(clientId, tele) {
+    window.clients[clientId].telemetry = tele;
+    UpdateClientOverview();
 }
 
 btnStart.addEventListener('click', function (e) {
@@ -118,9 +120,9 @@ btnStart.addEventListener('click', function (e) {
 
             gameBroadcaster = setInterval(function () {
                 let allRobotState = [];
-                for (const [key,it] of Object.entries(clients)) {
+                for (const [key, it] of Object.entries(clients)) {
                     if (it.telemetry == null) continue // Skip yang bukan robot
-                    allRobotState.push(it.telemetry);                    
+                    allRobotState.push(it.telemetry);
                 }
                 BroadcastAll(JSON.stringify({
                     Kind: "GAMESTATE",

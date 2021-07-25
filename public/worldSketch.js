@@ -4,6 +4,8 @@ const telemetryRaw = document.getElementById("telemetryRaw")
 const COLOR_CYAN_NAME = "CYAN";
 const COLOR_MAGENTA_NAME = "MAGENTA";
 
+let selectedRobotNameTelemetryToShow;
+
 const worldSketch = (sk) => {
     let scale = 1.0;
 
@@ -25,7 +27,7 @@ const worldSketch = (sk) => {
     };
 
     function drawRobot(worldX, worldY, worldRot, colorName) {
-        console.log({ colorName });
+        console.log({ worldX, worldY, colorName });
         const radiusRobotCm = 50;
 
         sk.push()
@@ -39,6 +41,7 @@ const worldSketch = (sk) => {
         }
 
         sk.circle(W2CanX(worldX), W2CanY(worldY), radiusRobotCm * scale);
+        // sk.circle(worldX, worldY, radiusRobotCm * scale);
 
         sk.push();
         sk.angleMode(sk.DEGREES);
@@ -52,21 +55,26 @@ const worldSketch = (sk) => {
     }
 
     function drawPerception(tele) {
-        telemetryRaw.innerText = JSON.stringify(tele, null, 2);
+        if (tele.MyColor == 'MAGENTA') {
+            telemetryRaw.innerText = JSON.stringify(tele, null, 2);
+        }
 
         const robWx = tele['MyTransform']['WorldXcm'];
         const robWy = tele['MyTransform']['WorldYcm'];
+        const robRot = tele['MyTransform']['WorldROT'];
 
         const robCx = W2CanX(robWx)
-        const robCy = W2CanX(robWy)
-
-        drawRobot(robWx, robWx, tele['MyTransform']['WorldROT'], tele['MyColor']);
-
+        const robCy = W2CanY(robWy)
         sk.push();
+        sk.stroke(255,165,0);
         const ballX = W2CanX(tele['BallTransform']['WorldXcm'])
         const ballY = W2CanY(tele['BallTransform']['WorldYcm'])
+        sk.circle(ballX, ballY, 3)
         sk.line(robCx, robCy, ballX, ballY)
         sk.pop();
+
+
+        drawRobot(robWx, robWy, robRot, tele['MyColor']);
     }
 
     function drawLapangan() {

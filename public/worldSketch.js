@@ -5,6 +5,14 @@ const COLOR_CYAN_NAME = "CYAN";
 const COLOR_MAGENTA_NAME = "MAGENTA";
 
 let selectedRobotNameTelemetryToShow;
+document.getElementById("nav-cyan-tab").addEventListener("click", function (e) {
+    selectedRobotNameTelemetryToShow = "CYAN";
+    telemetryRaw.innerText = "(Waiting)"
+})
+document.getElementById("nav-magenta-tab").addEventListener("click", function (e) {
+    selectedRobotNameTelemetryToShow = "MAGENTA";
+    telemetryRaw.innerText = "(Waiting)"
+})
 
 const worldSketch = (sk) => {
     let scale = 1.0;
@@ -24,10 +32,23 @@ const worldSketch = (sk) => {
     sk.setup = () => {
         sk.createCanvas(worldCanvasContainer.offsetWidth, worldCanvasContainer.offsetHeight);
         rescale();
+
+        sk.polygon = function (x, y, radius, npoints) {
+            sk.push();
+            sk.angleMode(sk.RADIANS);
+            let angle = sk.TWO_PI / npoints;
+            sk.beginShape();
+            for (let a = 0; a < sk.TWO_PI; a += angle) {
+                let sx = x + sk.cos(a) * radius;
+                let sy = y + sk.sin(a) * radius;
+                sk.vertex(sx, sy);
+            }
+            sk.endShape(sk.CLOSE);
+            sk.pop();
+        }
     };
 
     function drawRobot(worldX, worldY, worldRot, colorName) {
-        console.log({ worldX, worldY, colorName });
         const radiusRobotCm = 50;
 
         sk.push()
@@ -55,7 +76,7 @@ const worldSketch = (sk) => {
     }
 
     function drawPerception(tele) {
-        if (tele.MyColor == 'MAGENTA') {
+        if (tele.MyColor == selectedRobotNameTelemetryToShow) {
             telemetryRaw.innerText = JSON.stringify(tele, null, 2);
         }
 
@@ -65,13 +86,41 @@ const worldSketch = (sk) => {
 
         const robCx = W2CanX(robWx)
         const robCy = W2CanY(robWy)
+
+        // Bola
         sk.push();
-        sk.stroke(255,165,0);
+        sk.stroke(255, 165, 0);
+        sk.strokeWeight(3);
         const ballX = W2CanX(tele['BallTransform']['WorldXcm'])
         const ballY = W2CanY(tele['BallTransform']['WorldYcm'])
-        sk.circle(ballX, ballY, 3)
+        sk.circle(ballX, ballY, 5)
         sk.line(robCx, robCy, ballX, ballY)
         sk.pop();
+
+        // Gawang Temen
+        sk.push();
+        sk.stroke(0);
+        sk.strokeWeight(3);
+        const fgpX = W2CanX(tele['FriendGoalPostTransform']['WorldXcm'])
+        const fgpY = W2CanY(tele['FriendGoalPostTransform']['WorldYcm'])
+        sk.rectMode(sk.CENTER);
+        sk.rect(fgpX, fgpY, 5, 5)
+        sk.line(robCx, robCy, fgpX, fgpY)
+        sk.pop();
+
+        // Warna Cyan (Jika aku magenta)
+        if (tele.MyColor == "MAGENTA") {
+            sk.push();
+            sk.stroke(0,255,255)
+            sk.fill(0,255,255)
+            sk.strokeWeight(3);
+            const _X = W2CanX(tele['CyanTransform']['WorldXcm'])
+            const _Y = W2CanY(tele['CyanTransform']['WorldYcm'])
+            sk.line(robCx, robCy, _X, _Y)
+            sk.noStroke();
+            sk.polygon(_X, _Y, 5, 8)
+            sk.pop();
+        }
 
 
         drawRobot(robWx, robWy, robRot, tele['MyColor']);

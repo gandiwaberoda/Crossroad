@@ -3,9 +3,10 @@ const { app, BrowserWindow } = require('electron')
 
 // Live reload module which watches `public` folder
 const path = require('path')
-const _ = require('electron-reload')(__dirname + '/public', {
-    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-})
+// const _ = require('electron-reload')(__dirname + '/public', {
+//     electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+// })
+
 const url = require('url')
 
 // Keep a global reference of the window object, if you don't, the window will

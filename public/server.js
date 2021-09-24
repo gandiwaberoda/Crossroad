@@ -131,7 +131,7 @@ btnStart.addEventListener('click', function (e) {
                     }),
                     Receiver: "ALL"
                 }));
-            }, 10);
+            }, 1000/30); // 10 fps
 
             btnStart.innerText = "Stop";
             btnStart.classList.add("bg-danger");

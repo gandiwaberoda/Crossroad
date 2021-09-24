@@ -48,7 +48,7 @@ const worldSketch = (sk) => {
         }
     };
 
-    function drawRobot(worldX, worldY, worldRot, colorName) {
+    function drawRobot(worldX, worldY, worldRot, colorName, dcGut) {
         const radiusRobotCm = 50;
 
         sk.push()
@@ -68,6 +68,9 @@ const worldSketch = (sk) => {
         sk.angleMode(sk.DEGREES);
         sk.strokeWeight(2);
         sk.translate(W2CanX(worldX), W2CanY(worldY));
+        if (dcGut) {
+            sk.text('GUT DC', 0, -20);
+        }
         sk.rotate(worldRot)
         sk.line(0, 0, 0, -(radiusRobotCm / 2 * scale));
         sk.pop()
@@ -88,14 +91,16 @@ const worldSketch = (sk) => {
         const robCy = W2CanY(robWy)
 
         // Bola
-        sk.push();
-        sk.stroke(255, 165, 0);
-        sk.strokeWeight(3);
-        const ballX = W2CanX(tele['BallTransform']['WorldXcm'])
-        const ballY = W2CanY(tele['BallTransform']['WorldYcm'])
-        sk.circle(ballX, ballY, 5)
-        sk.line(robCx, robCy, ballX, ballY)
-        sk.pop();
+        if (tele['BallTransformExpired'] == false) {
+            sk.push();
+            sk.stroke(255, 165, 0);
+            sk.strokeWeight(3);
+            const ballX = W2CanX(tele['BallTransform']['WorldXcm'])
+            const ballY = W2CanY(tele['BallTransform']['WorldYcm'])
+            sk.circle(ballX, ballY, 5)
+            sk.line(robCx, robCy, ballX, ballY)
+            sk.pop();
+        }
 
         // Gawang Temen
         sk.push();
@@ -109,10 +114,10 @@ const worldSketch = (sk) => {
         sk.pop();
 
         // Warna Cyan (Jika aku magenta)
-        if (tele.MyColor == "MAGENTA") {
+        if (tele.MyColor == "MAGENTA" && tele['CyanTransformExpired'] == false) {
             sk.push();
-            sk.stroke(0,255,255)
-            sk.fill(0,255,255)
+            sk.stroke(0, 255, 255)
+            sk.fill(0, 255, 255)
             sk.strokeWeight(3);
             const _X = W2CanX(tele['CyanTransform']['WorldXcm'])
             const _Y = W2CanY(tele['CyanTransform']['WorldYcm'])
@@ -122,8 +127,22 @@ const worldSketch = (sk) => {
             sk.pop();
         }
 
+        // Warna Cyan (Jika aku magenta)
+        if (tele.MyColor == "CYAN" && tele['MagentaTransformExpired'] == false) {
+            sk.push();
+            sk.stroke(255, 0, 255)
+            sk.fill(255, 0, 255)
+            sk.strokeWeight(3);
+            const _X = W2CanX(tele['MagentaTransform']['WorldXcm'])
+            const _Y = W2CanY(tele['MagentaTransform']['WorldYcm'])
+            sk.line(robCx, robCy, _X, _Y)
+            sk.noStroke();
+            sk.polygon(_X, _Y, 5, 8)
+            sk.pop();
+        }
 
-        drawRobot(robWx, robWy, robRot, tele['MyColor']);
+
+        drawRobot(robWx, robWy, robRot, tele['MyColor'], tele['GutToBrainExpired']);
     }
 
     function drawLapangan() {

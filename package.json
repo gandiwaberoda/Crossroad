@@ -4,7 +4,7 @@
     "description": "A minimal Electron application running a p5.js sketch",
     "main": "main.js",
     "build": {
-        "appId": "your.id",
+        "appId": "harianugrah.com",
         "mac": {
             "category": "your.app.category.type"
         }
@@ -12,8 +12,10 @@
     "scripts": {
         "pack": "electron-builder --dir",
         "dist": "electron-builder",
+        "portable": "electron-builder --win portable",
         "start": "electron .",
-        "postinstall": "install-app-deps"
+        "postinstall": "install-app-deps",
+        "packager": "electron-packager ./ --platform=win32"
     },
     "repository": "https://github.com/garciadelcastillo/electron-p5js-quick-start",
     "keywords": [
@@ -32,6 +34,7 @@
         "electron-reload": "^1.5.0"
     },
     "dependencies": {
+        "electron-packager": "^15.4.0",
         "websocket": "^1.0.34"
     }
 }

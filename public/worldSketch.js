@@ -103,15 +103,19 @@ const worldSketch = (sk) => {
         }
 
         // Gawang Temen
-        sk.push();
-        sk.stroke(0);
-        sk.strokeWeight(3);
-        const fgpX = W2CanX(tele['FriendGoalPostTransform']['WorldXcm'])
-        const fgpY = W2CanY(tele['FriendGoalPostTransform']['WorldYcm'])
-        sk.rectMode(sk.CENTER);
-        sk.rect(fgpX, fgpY, 5, 5)
-        sk.line(robCx, robCy, fgpX, fgpY)
-        sk.pop();
+        if (tele['FriendGoalPostTransformExpired'] == false) {
+            sk.push();
+            sk.stroke(0);
+            sk.strokeWeight(3);
+            const fgpX = W2CanX(tele['FriendGoalPostTransform']['WorldXcm'])
+            const fgpY = W2CanY(tele['FriendGoalPostTransform']['WorldYcm'])
+            sk.rectMode(sk.CENTER);
+            sk.fill(0, 0, 0)
+            sk.rect(fgpX, fgpY, 8, 8)
+            sk.line(robCx, robCy, fgpX, fgpY)
+            sk.pop();
+        }
+
 
         // Warna Cyan (Jika aku magenta)
         if (tele.MyColor == "MAGENTA" && tele['CyanTransformExpired'] == false) {
@@ -119,11 +123,10 @@ const worldSketch = (sk) => {
             sk.stroke(0, 255, 255)
             sk.fill(0, 255, 255)
             sk.strokeWeight(3);
-            const _X = W2CanX(tele['CyanTransform']['WorldXcm'])
-            const _Y = W2CanY(tele['CyanTransform']['WorldYcm'])
-            sk.line(robCx, robCy, _X, _Y)
-            sk.noStroke();
-            sk.polygon(_X, _Y, 5, 8)
+            const ballX = W2CanX(tele['BallTransform']['WorldXcm'])
+            const ballY = W2CanY(tele['BallTransform']['WorldYcm'])
+            sk.circle(ballX, ballY, 5)
+            sk.line(robCx, robCy, ballX, ballY)
             sk.pop();
         }
 

@@ -137,8 +137,8 @@ const worldSketch = (sk) => {
             sk.stroke(0, 255, 255)
             sk.fill(0, 255, 255)
             sk.strokeWeight(3);
-            const ballX = W2CanX(tele['BallTransform']['WorldXcm'])
-            const ballY = W2CanY(tele['BallTransform']['WorldYcm'])
+            const ballX = W2CanX(tele['CyanTransform']['WorldXcm'])
+            const ballY = W2CanY(tele['CyanTransform']['WorldYcm'])
             sk.circle(ballX, ballY, 5)
             sk.line(robCx, robCy, ballX, ballY)
             sk.pop();

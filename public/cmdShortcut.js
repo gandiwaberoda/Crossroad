@@ -23,5 +23,5 @@ document.getElementById("cmdD").addEventListener("click", () => {
     BroadcastCommand("all:d");
 })
 document.getElementById("cmdResetOdo").addEventListener("click", () => {
-    BroadcastCommand("all:fwd(*a,0,0,0,0,0,1#)");
+    BroadcastCommand("all:respos");
 })

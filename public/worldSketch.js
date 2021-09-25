@@ -1,6 +1,8 @@
 const worldCanvasContainer = document.getElementById("worldCanvasContainer")
 const telemetryRaw = document.getElementById("telemetryRaw")
 
+const mouseWorld = document.getElementById("mouseWorld")
+
 const COLOR_CYAN_NAME = "CYAN";
 const COLOR_MAGENTA_NAME = "MAGENTA";
 
@@ -27,6 +29,18 @@ const worldSketch = (sk) => {
     }
     function W2CanY(worldY) {
         return (canvasH - worldY - lapanganPadding) * scale;
+    }
+    function Can2WX(canX) {
+        // return (worldX + lapanganPadding) * scale;
+        v = canX - (lapanganPadding * scale)
+        v = v * 1/scale
+        return Math.floor(v)
+    }
+    function Can2WY(canY) {
+        // return (canvasH - worldY - lapanganPadding) * scale;
+        v = (canvasH * scale) - canY - (lapanganPadding * scale)
+        v = v * 1/scale
+        return Math.floor(v)
     }
 
     sk.setup = () => {
@@ -189,6 +203,10 @@ const worldSketch = (sk) => {
         sk.resizeCanvas(canvasW * scale, canvasH * scale);
     }
 
+    function showMouseWorld() {
+        mouseWorld.innerText = "X: " + Can2WX(sk.mouseX) + ", " + "Y: " + Can2WY(sk.mouseY)
+    }
+
     sk.draw = () => {
         sk.background(0);
         drawLapangan();
@@ -199,6 +217,8 @@ const worldSketch = (sk) => {
             drawPerception(tele)
             // console.log(tele);}
         }
+
+        showMouseWorld()
     };
 
     sk.windowResized = () => {

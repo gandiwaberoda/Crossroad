@@ -25,6 +25,7 @@ window.BroadcastAll = function (msg) {
     }
 
     for (const [key, it] of Object.entries(window.clients)) {
+        console.log("Sent to ", key);
         it.send(msg ?? "ssszzz");
     }
 }
@@ -131,7 +132,7 @@ btnStart.addEventListener('click', function (e) {
                     }),
                     Receiver: "ALL"
                 }));
-            }, 1000/30); // 10 fps
+            }, 1000/10); // 10 fps
 
             btnStart.innerText = "Stop";
             btnStart.classList.add("bg-danger");
